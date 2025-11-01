@@ -2,7 +2,6 @@
 using Emgu.CV.CvEnum;
 using Emgu.CV.Dnn;
 using Emgu.CV.Structure;
-using System.Drawing;
 
 namespace ObjectDetection
 {
@@ -24,13 +23,13 @@ namespace ObjectDetection
             InitializeComponent();
 
             // Yolo dosya yolları
-            string yoloPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "yolo");
-            string cfgPath = System.IO.Path.Combine(yoloPath, "yolov4.cfg");
-            string weightsPath = System.IO.Path.Combine(yoloPath, "yolov4.weights");
-            string namesPath = System.IO.Path.Combine(yoloPath, "coco.names");
+            string yoloPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "yolo");
+            string cfgPath = Path.Combine(yoloPath, "yolov4.cfg");
+            string weightsPath = Path.Combine(yoloPath, "yolov4.weights");
+            string namesPath = Path.Combine(yoloPath, "coco.names");
 
             // Labels
-            labels = System.IO.File.ReadAllLines(namesPath);
+            labels = File.ReadAllLines(namesPath);
 
             // YOLO ağı yükle
             yoloNet = DnnInvoke.ReadNetFromDarknet(cfgPath, weightsPath);
@@ -68,7 +67,7 @@ namespace ObjectDetection
         private void ProcessFrame(object? sender, EventArgs e)
         {
             frameCounter++;
-            Mat frame = capture?.QueryFrame();
+            Mat? frame = capture?.QueryFrame();
             if (frame == null) return;
 
             // Eğer frame atlanıyorsa YOLO çalıştırma ama son kutuları çiz
